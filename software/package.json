@@ -1,0 +1,14 @@
+{
+  "name": "brianbot",
+  "version": "1.0.0",
+  "description": "the robot version of brian!",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Brian Ruiz",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^13.6.0"
+  }
+}
