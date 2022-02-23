@@ -12,6 +12,7 @@ var robot_noises = [
     "***beep boop*** ",
     "***bleep boop*** ",
     "***beep bloop*** ",
+    "***crackle***",
 ]
 var human_greetings = [
     "hello ",
@@ -46,7 +47,10 @@ function get_random_number(max) {
 
 function get_random_greeting(username) {
     var random_noise = get_random_number(robot_noises.length);
-    var random_greeting = 2 * (get_random_number(human_greetings.length) / 2) - 1;
+    var random_greeting = 2 * (get_random_number(human_greetings.length / 2));
+
+    console.log(random_noise)
+    console.log(random_greeting)
 
     return (robot_noises[random_noise] +
         human_greetings[random_greeting] +
@@ -54,13 +58,22 @@ function get_random_greeting(username) {
         human_greetings[random_greeting + 1])
 }
 
+function confusion(username) {
+    return ("huh? " + username + ", did you call me?");
+}
+
 client.on('ready', () => {
     console.log('brianbot is online: ' + client.user.id);
 });
 
 client.on('messageCreate', (msg) => {
-    if ((msg.content.includes('hi')) && (msg.content.includes(client.user.id))) {
-        msg.reply(get_random_greeting(msg.author.username))
+    if (msg.content.includes(client.user.id)){
+        if (msg.content.includes('hi')) {
+            msg.reply(get_random_greeting(msg.author.username))
+        }
+        else {
+            msg.reply(confusion(msg.author.username));
+        }
     }
 });
 
