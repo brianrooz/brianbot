@@ -67,12 +67,14 @@ client.on('ready', () => {
 });
 
 client.on('messageCreate', (msg) => {
-    if (msg.content.includes(client.user.id)){
+    if (msg.content.includes(client.user.id)) {
+        var name = msg.author.username;
+
         if (msg.content.includes('hi')) {
-            msg.reply(get_random_greeting(msg.author.username))
+            msg.reply(get_random_greeting(name))
         }
         else {
-            msg.reply(confusion(msg.author.username));
+            msg.reply(confusion(name));
         }
     }
 });
