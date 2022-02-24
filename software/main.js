@@ -12,7 +12,7 @@ var robot_noises = [
     "***beep boop*** ",
     "***bleep boop*** ",
     "***beep bloop*** ",
-    "***crackle***",
+    "***crackle*** ",
 ]
 var human_greetings = [
     "hello ",
@@ -49,9 +49,6 @@ function get_random_greeting(username) {
     var random_noise = get_random_number(robot_noises.length);
     var random_greeting = 2 * (get_random_number(human_greetings.length / 2));
 
-    console.log(random_noise)
-    console.log(random_greeting)
-
     return (robot_noises[random_noise] +
         human_greetings[random_greeting] +
         username +
@@ -59,7 +56,14 @@ function get_random_greeting(username) {
 }
 
 function confusion(username) {
-    return ("huh? " + username + ", did you call me?");
+    var random_noises = [get_random_number(robot_noises.length), get_random_number(robot_noises.length)];
+
+    return ("huh? " +
+        robot_noises[random_noises[0]] +
+        username +
+        ", did you call me " +
+        robot_noises[random_noises[1]] +
+        "?");
 }
 
 client.on('ready', () => {
@@ -75,6 +79,11 @@ client.on('messageCreate', (msg) => {
         }
         else {
             msg.reply(confusion(name));
+        }
+    }
+    else if (msg.channel.name.includes("another-channel")) {
+        if (/^Wordle [1-9]{3,} [1-6]\W[1-6]/.test(msg.content)) {
+            msg.reply("ooh a wordle!");
         }
     }
 });
