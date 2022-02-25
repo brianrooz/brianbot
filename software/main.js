@@ -5,14 +5,16 @@ const get_random_number = require('./greetings.js').get_random_number;
 const get_random_greeting = require('./greetings.js').get_random_greeting;
 const confusion = require('./greetings.js').confusion;
 
+/* wordle dependency setup */
+const wordle_regex = require('./wordle.js').wordle_regex;
+const wordle_channel = require('./wordle.js').wordle_channel;
+const admire_wordle = require('./wordle.js').admire_wordle;
+
 /* discord client setup */
 const Discord = require('discord.js');
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
 
-function admire_wordle(results) {
-    console.log('ooh a wordle!');
-}
-
+/* event handlers */
 client.on('ready', () => {
     console.log('brianbot is online: ' + client.user.id);
 });
@@ -28,11 +30,11 @@ client.on('messageCreate', (msg) => {
             msg.reply(confusion(name));
         }
     }
-    else if (msg.channel.name.includes("another-channel")) {
-        if (/^Wordle [1-9]{3,} [1-6]\W[1-6]/.test(msg.content)) {
-            admire_wordle(msg.content);
+    else if (msg.channel.name.includes(wordle_channel)) {
+        if (wordle_regex.test(msg.content)) {
+            admire_wordle(msg);
         }
     }
 });
 
-client.login('');
+client.login('OTQ1NTQ1Njc3OTQ0MDI5MjQ0.YhRuCQ.Tqj_QAcO1sN79kvKXGQ3mxAjJl8');
