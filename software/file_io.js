@@ -1,5 +1,5 @@
 /* json read/write dependencies */
-const fs = require('fs');
+const stats = require('../docs/wordle');
 
 function save_stats(content) {
     fs.writeFile('../docs/wordle.json', JSON.stringify(content), (err) => {
@@ -8,4 +8,9 @@ function save_stats(content) {
     });
 }
 
+function read_stats() {
+    console.log(stats);
+}
+
 exports.save_stats = save_stats;
+exports.read_stats = read_stats;

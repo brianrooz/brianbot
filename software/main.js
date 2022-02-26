@@ -12,6 +12,7 @@ const admire_wordle = require('./wordle.js').admire_wordle;
 
 /* file_io dependency setup */
 const save_stats = require('./file_io.js').save_stats;
+const read_stats = require('./file_io.js').read_stats;
 
 /* discord client setup */
 const Discord = require('discord.js');
@@ -36,8 +37,17 @@ client.on('messageCreate', (msg) => {
     else if (msg.channel.name.includes(wordle_channel)) {
         if (wordle_regex.test(msg.content)) {
             stats = admire_wordle(msg);
-            console.log(stats);
-            save_stats(stats);
+            msg.reply("awesome wordle, " + msg.author.username + "!\n\n" +
+                "today's wordle: " + stats.number + "\n" +
+                "your number of guesses: " + stats.guesses + "\n" +
+                "your best guess (by row number): " + stats.luck.best_row + "\n\n" +
+                "you went from " + stats.grid[stats.luck.best_row - 1].black + " black tiles, " +
+                stats.grid[stats.luck.best_row - 1].yellow + " yellow tiles, and " +
+                stats.grid[stats.luck.best_row - 1].green + " green tiles in row " + stats.luck.best_row + " to \n" +
+                stats.grid[stats.luck.best_row].black + " black tiles, " +
+                stats.grid[stats.luck.best_row].yellow + " yellow tiles, and " +
+                stats.grid[stats.luck.best_row].green + " green tiles in row " + stats.luck.best_row + ".\n\n good job today! :)"
+                );
         }
     }
 });

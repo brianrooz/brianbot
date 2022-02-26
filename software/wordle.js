@@ -26,7 +26,7 @@ function wordle_stats(parameters) {
 function admire_wordle(results) {
 
     /* initialize the statistics struct */
-    var statistics = wordle_stats("grid guesses luck total username");
+    var statistics = wordle_stats("grid number guesses luck total username");
     var rows = [
         { 'black': 0, 'yellow': 0, 'green': 0 },
         { 'black': 0, 'yellow': 0, 'green': 0 },
@@ -36,10 +36,13 @@ function admire_wordle(results) {
         { 'black': 0, 'yellow': 0, 'green': 0 }
     ]
     var luck_object = { 'best_row': 0, 'factor': 0};
-    var user = new statistics(rows, 0, luck_object, 0, "");
+    var user = new statistics(rows, 0, 0, luck_object, 0, "");
 
     /* save the wordle submitter's name */
     user.username = results.author.username;
+
+    /* attempt to find today's wordle number */
+    user.number = results.content.split(' ')[1];
 
     /* attempt to find the number of guesses it took */
     var guess_index = results.content.search('/') - 1;
@@ -107,7 +110,7 @@ function admire_wordle(results) {
         }
         last_luck = current_luck;
     }
-
+    console.log(user);
     return user;
 }
 
