@@ -10,6 +10,9 @@ const wordle_regex = require('./wordle.js').wordle_regex;
 const wordle_channel = require('./wordle.js').wordle_channel;
 const admire_wordle = require('./wordle.js').admire_wordle;
 
+/* file_io dependency setup */
+const save_stats = require('./file_io.js').save_stats;
+
 /* discord client setup */
 const Discord = require('discord.js');
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
@@ -34,6 +37,7 @@ client.on('messageCreate', (msg) => {
         if (wordle_regex.test(msg.content)) {
             stats = admire_wordle(msg);
             console.log(stats);
+            save_stats(stats);
         }
     }
 });
