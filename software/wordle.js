@@ -26,7 +26,7 @@ function wordle_stats(parameters) {
 function admire_wordle(results) {
 
     /* initialize the statistics struct */
-    var statistics = wordle_stats("grid guesses");
+    var statistics = wordle_stats("grid guesses luck total username");
     var rows = [
         { 'black': 0, 'yellow': 0, 'green': 0 },
         { 'black': 0, 'yellow': 0, 'green': 0 },
@@ -35,13 +35,20 @@ function admire_wordle(results) {
         { 'black': 0, 'yellow': 0, 'green': 0 },
         { 'black': 0, 'yellow': 0, 'green': 0 }
     ]
-    var user = new statistics(rows, 0);
+    var luck_object = { 'best_row': 0, 'factor': 0};
+    var user = new statistics(rows, 0, luck_object, 0, "");
 
     /* attempt to find the number of guesses it took */
     var guess_index = results.content.search('/') - 1;
     if (guess_index == -2) {
         console.log("could not decipher " + results.author.username + "'s wordle");
+        results.reply("hey sorry...i can't tell how many guesses you made to figure our your wordle. tell brian that i failed :(")
         return -1;
+    }
+    else if ((results.content[guess_index] < 0) || (results.content[guess_index] > 6)) {
+        console.log(results.author.username + "'s number of gueses doesn't make sense");
+        results.reply("hey sorry...the number of guesses you took doesn't make sense to me. tell brian that i failed :(")
+        return -2;
     }
     user.guesses = results.content[guess_index];
 
@@ -55,7 +62,8 @@ function admire_wordle(results) {
     }
     if (start_index < 0) {
         console.log("could not find first emoji index in " + results.author.username + "'s wordle");
-        return -2;
+        results.reply("hey sorry...i got confused trying to find the emojis in your wordle. tell brian that i failed :(")
+        return -3;
     }
 
     /* attempt to decipher how the wordle went */
@@ -84,6 +92,17 @@ function admire_wordle(results) {
             }
             pointer++;
         }
+    }
+
+    /* attempt to calculate how lucky the user's guesses were */
+    var last_luck = 0;
+    for (let row = 0; row < user.guesses; row++) {
+        let current_luck = user.grid[row].yellow + (2 * user.grid[row].green);
+        if (current_luck - last_luck >= user.luck.factor) {
+            user.luck.factor = current_luck - last_luck;
+            user.luck.best_row = row;
+        }
+        last_luck = current_luck;
     }
     console.log(user);
 }
