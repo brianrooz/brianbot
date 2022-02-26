@@ -38,6 +38,9 @@ function admire_wordle(results) {
     var luck_object = { 'best_row': 0, 'factor': 0};
     var user = new statistics(rows, 0, luck_object, 0, "");
 
+    /* save the wordle submitter's name */
+    user.username = results.author.username;
+
     /* attempt to find the number of guesses it took */
     var guess_index = results.content.search('/') - 1;
     if (guess_index == -2) {
@@ -104,7 +107,8 @@ function admire_wordle(results) {
         }
         last_luck = current_luck;
     }
-    console.log(user);
+
+    return user;
 }
 
 exports.wordle_regex = wordle_regex;

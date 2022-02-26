@@ -32,7 +32,8 @@ client.on('messageCreate', (msg) => {
     }
     else if (msg.channel.name.includes(wordle_channel)) {
         if (wordle_regex.test(msg.content)) {
-            admire_wordle(msg);
+            stats = admire_wordle(msg);
+            console.log(stats);
         }
     }
 });
